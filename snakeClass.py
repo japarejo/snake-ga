@@ -27,7 +27,7 @@ def define_parameters():
     params['first_layer_size'] = 200    # neurons in the first layer
     params['second_layer_size'] = 20   # neurons in the second layer
     params['third_layer_size'] = 50    # neurons in the third layer
-    params['episodes'] = 250          
+    params['episodes'] = 250
     params['memory_size'] = 2500
     params['batch_size'] = 1000
     # Settings
@@ -35,7 +35,11 @@ def define_parameters():
     params['train'] = False
     params["test"] = True
     params['plot_score'] = True
-    params['log_path'] = 'logs/scores_' + str(datetime.datetime.now().strftime("%Y%m%d%H%M%S")) +'.txt'
+    params['log_path'] = (
+        'logs/scores_'
+        + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        + '.txt'
+    )
     return params
 
 
@@ -60,8 +64,7 @@ class Player(object):
         y = 0.5 * game.game_height
         self.x = x - x % 20
         self.y = y - y % 20
-        self.position = []
-        self.position.append([self.x, self.y])
+        self.position = [[self.x, self.y]]
         self.food = 1
         self.eaten = False
         self.image = pygame.image.load('img/snakeBody.png')
@@ -149,10 +152,7 @@ def eat(player, food, game):
 
 
 def get_record(score, record):
-    if score >= record:
-        return score
-    else:
-        return record
+    return score if score >= record else record
 
 
 def display_ui(game, score, record):
@@ -194,7 +194,7 @@ def plot_seaborn(array_counter, array_score, train):
     sns.set(color_codes=True, font_scale=1.5)
     sns.set_style("white")
     plt.figure(figsize=(13,8))
-    fit_reg = False if train== False else True        
+    fit_reg = train != False
     ax = sns.regplot(
         np.array([array_counter])[0],
         np.array([array_score])[0],
